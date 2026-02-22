@@ -32,12 +32,12 @@ public class OnePieceofJavaService {
     }
 
     //GET by ID
-    public Employee getEmployeeById(){
+    public Employee getEmployeeById(Long employeeId){
         return employeeList.stream().filter( employee -> employee.getId().equals(employeeId)).findFirst().orElse(null);
     }
 
     //ADD
-    private Employee addEmployee(Employee employee) {
+    public Employee addEmployee(Employee employee) {
         employee.setId(employeeId++);
         if(employee.getAssets() != null && !employee.getAssets().isEmpty()){
             for(Assets assets : employee.getAssets()){{
@@ -63,7 +63,7 @@ public class OnePieceofJavaService {
     }
 
     //DELETE by ID
-    public void  deleteEmployeeById(){
+    public void  deleteEmployeeById(Long employeeId){
         employeeList.removeIf(employee -> employee.getId().equals(employeeId));
 
         /*
