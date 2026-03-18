@@ -5,6 +5,7 @@ import com.onepieceofjava.DanReyesSpringbootWithoutComponent.model.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class OnePieceofJavaService {
 
@@ -16,6 +17,7 @@ public class OnePieceofJavaService {
 
     public OnePieceofJavaService() {
         initializeEmploye();
+        initializeAssets();
     }
 
     private void initializeEmploye() {
@@ -24,6 +26,14 @@ public class OnePieceofJavaService {
         addEmployee(new Employee(null,"Luffy","AWS"));
         addEmployee(new Employee(null,"Itchigo","Oracle"));
         addEmployee(new Employee(null,"Zoro","SAP"));
+    }
+
+    private void initializeAssets() {
+        addAsset(new Assets(null,"Lenovo","Developer","5678Lnv"));
+        addAsset(new Assets(null,"Asus","HR","9876As"));
+        addAsset(new Assets(null,"HP","Accounting","1234HP"));
+        addAsset(new Assets(null,"Acer","Marketing","2345Acr"));
+        addAsset(new Assets(null,"MSI","Executives","4567Msi"));
     }
 
     //GET
@@ -76,4 +86,50 @@ public class OnePieceofJavaService {
     }
 
     //======================= ASSETS ========================================
+    public List<Assets> getAllAssets(){
+        return assetsList;
+    }
+
+    public Assets getAssetById(Long assetId){
+        return assetsList.stream().filter( assets -> assets.getId().equals(assetId)).findFirst().orElse(null);
+    }
+
+    public List<Assets> getAssetsByEmployeeId(Long employeeId){
+        return employeeList.stream().filter(employee -> employee.getId().equals(employeeId)).findFirst().map(Employee::getAssets).orElse(null);
+    }
+
+    public Assets addAsset(Assets assets) {
+        assets.setId(assetId++);
+        assetsList.add(assets);
+
+        return assets;
+    }
+
+    public Employee assignAssetToTheEmployee(Long employeeId, Long assetId){
+        Optional<Employee> employeeOptional = employeeList.stream().filter(employee -> employee.getId().equals(employeeId)).findFirst();
+        Optional<Assets> assetsOptional = assetsList.stream().filter(assets -> assets.getId().equals(assetId)).findFirst();
+
+        if(employeeOptional.isPresent() && assetsOptional.isPresent()){
+            employeeOptional.get().addAssets(assetsOptional.get());
+            return employeeOptional.get();
+        }
+        return null;
+    }
+
+    public void  deleteAssetById(Long assetId){
+        assetsList.removeIf(assets -> assets.getId().equals(assetId));
+
+    }
+
+    public Employee removeAssetFromEmployee(Long employeeId, Long assetId){
+        Optional<Employee> employeeOptional = employeeList.stream().filter(employee -> employee.getId().equals(employeeId)).findFirst();
+        Optional<Assets> assetsOptional = assetsList.stream().filter(assets -> assets.getId().equals(assetId)).findFirst();
+
+        if(employeeOptional.isPresent() && assetsOptional.isPresent()){
+            employeeOptional.get().removeAssets(assetsOptional.get());
+            return employeeOptional.get();
+        }
+
+        return null;
+    }
 }

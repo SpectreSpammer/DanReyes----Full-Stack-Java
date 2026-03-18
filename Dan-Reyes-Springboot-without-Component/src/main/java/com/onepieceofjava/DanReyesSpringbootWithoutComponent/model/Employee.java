@@ -1,6 +1,7 @@
 package com.onepieceofjava.DanReyesSpringbootWithoutComponent.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Employee {
@@ -13,7 +14,7 @@ public class Employee {
         this.id = id;
         this.name = name;
         this.department = department;
-        this.assets = assets;
+        this.assets = new ArrayList<>();
     }
 
     public Long getId() {
@@ -46,5 +47,13 @@ public class Employee {
 
     public void setAssets(List<Assets> assets) {
         this.assets = assets;
+    }
+
+    public void addAssets(Assets assets){
+        this.assets.add(assets);
+    }
+
+    public void removeAssets(Assets assets){
+        this.assets.remove(assets);
     }
 }
